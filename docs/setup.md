@@ -1,74 +1,75 @@
 # Setup Guide for Medical AI Agent
 
-This guide explains how to set up the Medical AI Agent, a web-based chatbot powered by Groq’s `llama-3.3-70b-versatile` model.
+This guide sets up the Medical AI Agent, a RAG-enabled chatbot using Groq and Pinecone.
 
 ## Prerequisites
 
-- Python 3.12 (download from [python.org](https://www.python.org/downloads/))
+- Python 3.12 ([Download](https://www.python.org/downloads/))
 - A code editor (e.g., VSCode)
-- Terminal or command-line access
-- (Optional) Git for cloning the project
+- Terminal access
+- Accounts: Groq, Pinecone
 
 ## Get the Project
 
-- Download and unzip the `medical_ai_agent` folder, or clone it with:
+Clone or download this repository:
 
-  ```bash
-  git clone <repository-url>
-  ```
+```bash
+git clone <repository-url>
+cd medical_ai_agent
+```
 
 ## Set Up the Environment
 
-1. Open your terminal and navigate to the project folder:
+Create and activate a virtual environment:
 
-   ```bash
-   cd medical_ai_agent
-   ```
+```bash
+python -m venv venv
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
+```
 
-2. Create a virtual environment:
+Install dependencies:
 
-   ```bash
-   python -m venv venv
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-3. Activate it:
+Includes `fastapi`, `uvicorn`, `pinecone-client`, `sentence-transformers`, `pdfplumber`, etc.
 
-   - **Windows:**
-     ```bash
-     venv\Scripts\activate
-     ```
-   - **macOS/Linux:**
-     ```bash
-     source venv/bin/activate
-     ```
-     You’ll see `(venv)` in your prompt.
+## Configure API Keys
 
-## Install Dependencies
+### Groq API Key
 
-- Install required libraries:
+- Sign up at [groq.com](https://groq.com), get an API key.
+- Add it to the `.env` file:
 
-  ```bash
-  pip install -r requirements.txt
-  ```
+```bash
+echo "GROQ_API_KEY=your_key" >> .env
+```
 
-## Get a Groq API Key
+### Pinecone API Key
 
-1. Sign up at [Groq](https://groq.com).
-2. Go to the developer section and generate an API key.
-3. Create a `.env` file in the project root:
+- Sign up at [pinecone.io](https://www.pinecone.io), get an API key and region (e.g., `us-west1-gcp`).
+- Add it to the `.env` file:
 
-   ```bash
-   echo "GROQ_API_KEY=your_key_here" > .env
-   ```
+```bash
+echo "PINECONE_API_KEY=your_key" >> .env
+echo "PINECONE_REGION=your_region" >> .env
+```
 
-   **Note:** Keep your API key secret—don’t share `.env`!
+## Prepare Medical Data
+
+- Add medical PDFs to the `data/` folder (e.g., public health guides, 5–10 files to start).
+- On first run, the chatbot automatically creates the `medical-rag` Pinecone index and uploads this data if the index is empty.
 
 ## Run the Chatbot
 
-- Start the FastAPI server:
+Start the FastAPI server:
 
-  ```bash
-  uvicorn src.main:app --reload
-  ```
+```bash
+uvicorn src.main:app --reload
+```
 
-- Check it’s running at [http://127.0.0.1:8000](http://127.0.0.1:8000) (open in a browser to see FastAPI’s default page).
+Check it’s running at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+On startup, it’ll create/populate the Pinecone index if needed—watch the logs!
