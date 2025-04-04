@@ -14,7 +14,7 @@ This guide sets up the Medical AI Agent, a RAG-enabled chatbot using Groq and Pi
 Clone or download this repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Macmilan24/Medical-Agent.git
 cd medical_ai_agent
 ```
 

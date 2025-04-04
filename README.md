@@ -37,7 +37,7 @@ This repository contains the initial version (Phase 1) of a Medical AI Agent—a
 
 1. **Clone the Repository**
 
-   - Run `git clone https://github.com/Ma/medical-ai-agent.git`
+   - Run `git clone https://github.com/Macmilan24/Medical-Agent.git`
    - Navigate to the project folder: `cd medical-ai-agent`
 
 2. **Set Up Virtual Environment**
