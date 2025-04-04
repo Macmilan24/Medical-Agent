@@ -21,20 +21,4 @@ def get_chat_reponse(user_input: str) -> str:
     if len(context) < 100:
         query = f" say I don't know based on the available information, but here is my thought:\n\n{user_input}\n\n"
 
-    print("Query: ", query)
-
-    # Get the response from the LLM
     return get_groq_response(query)
-
-
-# not the main usage but just to Practice
-
-# user_input = ""
-# print("Welcome to MediAI! How can I assist you today?")
-# while user_input != "No":
-#     user_input = input("You: ")
-#     result = get_chat_reponse(user_input)
-#     print("MediAI: " + result + "\n\n\n\n")
-
-#     print("Do you want to continue? (Yes/No)")
-#     user_input = input("You: ")
