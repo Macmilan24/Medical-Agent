@@ -1,5 +1,5 @@
 import os
-from pinecone import Pinecone, ServerlessSpec
+from pinecone import Pinecone
 from dotenv import load_dotenv
 from src.embedding import generate_embeddings
 from src.data_processing import process_documents
@@ -7,24 +7,9 @@ from typing import List
 
 load_dotenv()
 
-pc = Pinecone(
-    api_key=os.environ.get("PINECONE_API_KEY"),
-)
-
+# Assume that the index is created in main.py.
+pc = Pinecone(api_key=os.environ.get("PINECONE_API_KEY"))
 index_name = "medical-rag"
-if index_name not in pc.list_indexes().names():
-    print(f"Creating index {index_name} ...")
-    pc.create_index(
-        name=index_name,
-        dimension=384,
-        spec=ServerlessSpec(
-            cloud="aws",
-            region=os.environ.get("PINECONE_REGION"),
-        ),
-    )
-else:
-    print(f"Index {index_name} already exists.")
-    print(f"Connecting to index {index_name} ...")
 index = pc.Index(index_name)
 
 
@@ -75,10 +60,12 @@ def upload_to_pinecone(data_folder: str, max_pages: int = 100, batch_size: int =
 def query_pinecone(query_embedding: List, top_k: int = 3, metadata: bool = True):
     """
     Query Pinecone index for similar vectors.
+
     Args:
         query_embedding (List): The embedding of the query text.
         top_k (int, optional): The number of similar vectors to return. Defaults to 3.
         metadata (bool, optional): Whether to include metadata in the response. Defaults to True.
+
     Returns:
         List: A list of similar vectors from the Pinecone index.
     """
