@@ -1,8 +1,9 @@
 import os
 from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
-from embedding import generate_embeddings
-from data_processing import process_documents
+from src.embedding import generate_embeddings
+from src.data_processing import process_documents
+from typing import List
 
 load_dotenv()
 
@@ -71,6 +72,19 @@ def upload_to_pinecone(data_folder: str, max_pages: int = 100, batch_size: int =
     print("Upload Complete!")
 
 
-if __name__ == "__main__":
-    data_folder = "data"
-    upload_to_pinecone(data_folder, max_pages=300, batch_size=50)
+def query_pinecone(query_embedding: List, top_k: int = 3, metadata: bool = True):
+    """
+    Query Pinecone index for similar vectors.
+    Args:
+        query_embedding (List): The embedding of the query text.
+        top_k (int, optional): The number of similar vectors to return. Defaults to 3.
+        metadata (bool, optional): Whether to include metadata in the response. Defaults to True.
+    Returns:
+        List: A list of similar vectors from the Pinecone index.
+    """
+    query_response = index.query(
+        vector=query_embedding,
+        top_k=top_k,
+        include_metadata=metadata,
+    )
+    return query_response["matches"]

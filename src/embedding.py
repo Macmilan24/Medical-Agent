@@ -33,3 +33,16 @@ def generate_embeddings(processed_data: List[str]) -> List[Dict[str, any]]:
         )
 
     return embeddings_list
+
+
+def get_embeddings(text: str) -> List[float]:
+    """
+    Generate embeddings for a single text chunk.
+
+    Args:
+        text (str): A text chunk.
+
+    Returns:
+        List[float]: The embedding of the text chunk.
+    """
+    return model.encode(text, convert_to_numpy=True).tolist()

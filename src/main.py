@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from chatbot import get_chat_reponse
+from src.chatbot import get_chat_reponse
 
 
 class Chat_Request(BaseModel):
