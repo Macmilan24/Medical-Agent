@@ -69,9 +69,13 @@ def query_pinecone(query_embedding: List, top_k: int = 3, metadata: bool = True)
     Returns:
         List: A list of similar vectors from the Pinecone index.
     """
-    query_response = index.query(
-        vector=query_embedding,
-        top_k=top_k,
-        include_metadata=metadata,
-    )
-    return query_response["matches"]
+    try:
+        query_response = index.query(
+            vector=query_embedding,
+            top_k=top_k,
+            include_metadata=metadata,
+        )
+        return query_response["matches"]
+    except Exception as e:
+        print(f"Error querying Pinecone: {e}")  # Log the error
+        return []

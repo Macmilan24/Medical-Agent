@@ -56,4 +56,5 @@ async def chat_with_ai(request: Chat_Request):
         response = get_chat_reponse(request.user_input)
         return {"assistance": response}
     except Exception as e:
+        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))

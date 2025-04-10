@@ -15,13 +15,13 @@ def get_data_from_pinecone(query: str):
     query_vector = get_embeddings(query)
     pinecone_response = query_pinecone(query_vector)
 
-    context = ""
-    source = ""
+    context = []
+    source = []
 
     if len(pinecone_response) > 0:
         for i in range(min(3, len(pinecone_response))):
-            if pinecone_response[i]["score"] > 0.5:
-                context += pinecone_response[i]["metadata"]["text"] + "\n\n"
-                source += pinecone_response[i]["metadata"]["source"] + "\n"
+            context.append(pinecone_response[i]["metadata"]["text"])
+            source.append(pinecone_response[i]["metadata"]["source"])
 
-    return context.strip(), source.strip()
+    # Join lists into strings
+    return "\n\n".join(context), "\n".join(source)
