@@ -1,4 +1,5 @@
 import os
+import uuid
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.chatbot import get_chat_reponse
@@ -48,12 +49,13 @@ app = FastAPI(lifespan=lifespan)
 
 class Chat_Request(BaseModel):
     user_input: str
+    session_id: str = str(uuid.uuid4())
 
 
 @app.post("/chat")
 async def chat_with_ai(request: Chat_Request):
     try:
-        response = get_chat_reponse(request.user_input)
+        response = get_chat_reponse(request.user_input, request.session_id)
         return {"assistance": response}
     except Exception as e:
         print(f"Error: {e}")
