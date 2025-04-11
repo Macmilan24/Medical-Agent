@@ -1,17 +1,17 @@
 # Setup Guide for Medical AI Agent
 
-This guide sets up the Medical AI Agent, a RAG-enabled chatbot using Groq and Pinecone.
+This guide sets up the Medical AI Agent, a RAG-enabled, context-aware chatbot using Groq, Pinecone, and a Streamlit UI.
 
 ## Prerequisites
 
-- Python 3.12 ([Download](https://www.python.org/downloads/))
+- Python 3.12 (available from [python.org](https://www.python.org/downloads/))
 - A code editor (e.g., VSCode)
 - Terminal access
-- Accounts: Groq, Pinecone
+- Accounts for Groq and Pinecone
 
 ## Get the Project
 
-Clone or download this repository:
+Clone or download the repository:
 
 ```bash
 git clone https://github.com/Macmilan24/Medical-Agent.git
@@ -34,42 +34,47 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Includes `fastapi`, `uvicorn`, `pinecone-client`, `sentence-transformers`, `pdfplumber`, etc.
+_This installs packages such as `fastapi`, `uvicorn`, `pinecone-client`, `sentence-transformers`, `pdfplumber`, and `streamlit`._
 
 ## Configure API Keys
 
 ### Groq API Key
 
-- Sign up at [groq.com](https://groq.com), get an API key.
-- Add it to the `.env` file:
-
-```bash
-echo "GROQ_API_KEY=your_key" >> .env
-```
+1. Sign up at [groq.com](https://groq.com) and obtain an API key.
+2. Add it to the `.env` file:
+   ```bash
+   echo "GROQ_API_KEY=your_key" >> .env
+   ```
 
 ### Pinecone API Key
 
-- Sign up at [pinecone.io](https://www.pinecone.io), get an API key and region (e.g., `us-west1-gcp`).
-- Add it to the `.env` file:
+1. Sign up at [pinecone.io](https://www.pinecone.io) and get an API key along with your region (e.g., `us-west1-gcp`).
+2. Add the API key and region to the `.env` file:
+   ```bash
+   echo "PINECONE_API_KEY=your_key" >> .env
+   echo "PINECONE_REGION=your_region" >> .env
+   ```
+
+### Backend URL
+
+Add the backend URL to the `.env` file:
 
 ```bash
-echo "PINECONE_API_KEY=your_key" >> .env
-echo "PINECONE_REGION=your_region" >> .env
+echo "BACKEND_URL=http://127.0.0.1:8000/chat" >> .env
 ```
 
 ## Prepare Medical Data
 
-- Add medical PDFs to the `data/` folder (e.g., public health guides, 5–10 files to start).
-- On first run, the chatbot automatically creates the `medical-rag` Pinecone index and uploads this data if the index is empty.
+Add medical PDFs to the `data/` folder (e.g., public health guides, 5–10 files to start).  
+On the first run, the backend auto-creates the `medical-rag` Pinecone index and uploads the data if the index is empty.
 
 ## Run the Chatbot
 
-Start the FastAPI server:
+Start the Streamlit UI (this will automatically launch the FastAPI backend):
 
 ```bash
-uvicorn src.main:app --reload
+streamlit run src/chat_ui.py
 ```
 
-Check it’s running at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-
-On startup, it’ll create/populate the Pinecone index if needed—watch the logs!
+Open your browser to [http://localhost:8501](http://localhost:8501) (Streamlit's default URL).  
+On startup, the backend will populate Pinecone if needed—watch the terminal logs for details!
